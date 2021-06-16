@@ -41,11 +41,7 @@ module CanCan
         table_metadata = ActiveRecord::TableMetadata.new(@model_class, table)
         predicate_builder = ActiveRecord::PredicateBuilder.new(table_metadata)
 
-        conditions = predicate_builder.resolve_column_aliases(conditions)
-
-        conditions.stringify_keys!
-
-        predicate_builder.build_from_hash(conditions).map { |b| visit_nodes(b) }.join(' AND ')
+        predicate_builder.build_from_hash(conditions.stringify_keys).map { |b| visit_nodes(b) }.join(' AND ')
       end
 
       def visit_nodes(node)
